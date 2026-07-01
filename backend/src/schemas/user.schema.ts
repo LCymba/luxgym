@@ -1,0 +1,10 @@
+import { z } from "zod";
+
+export const createUserSchema = z.object({
+  name: z.string().min(1, "El nombre es obligatorio"),
+  email: z.string().email("Email inválido"),
+  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+  role: z.enum(["MEMBER", "TRAINER", "ADMIN"]).optional().default("MEMBER"),
+});
+
+export type CreateUserInput = z.infer<typeof createUserSchema>;
