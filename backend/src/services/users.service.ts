@@ -43,8 +43,34 @@ export async function listUsers() {
   return users.map(omitPassword);
 }
 
+export async function listMembers() {
+  return prisma.user.findMany({
+    where: { role: "MEMBER" },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      membershipExpiry: true,
+    },
+    orderBy: { name: "asc" },
+  });
+}
+
 export async function getUserById(id: string) {
-  const user = await prisma.user.findUnique({ where: { id } });
+  const user = await prisma.user.findUnique({
+    where: { id },
+    include: {
+      routines: {
+        include: {
+          exercises: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
+  });
 
   if (!user) {
     throw new AppError(404, "Usuario no encontrado");

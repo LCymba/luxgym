@@ -8,20 +8,44 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  name      String
-  email     String    @unique
-  password  String
-  role      String    @default("MEMBER")
-  createdAt DateTime  @default(now())
-  routines  Routine[]
+  id               String       @id @default(cuid())
+  name             String
+  email            String       @unique
+  password         String
+  role             String       @default("MEMBER")
+  membershipExpiry DateTime?
+  createdAt        DateTime     @default(now())
+  routines         Routine[]
+  workoutLogs      WorkoutLog[]
 }
 
 model Routine {
-  id          String   @id @default(cuid())
+  id          String       @id @default(cuid())
   name        String
   description String?
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercises   Exercise[]
+  createdAt   DateTime     @default(now())
+  workoutLogs WorkoutLog[]
+}
+
+model Exercise {
+  id        String  @id @default(cuid())
+  name      String
+  sets      Int?
+  reps      Int?
+  notes     String?
+  routineId String
+  routine   Routine @relation(fields: [routineId], references: [id], onDelete: Cascade)
+}
+
+model WorkoutLog {
+  id          String   @id @default(cuid())
+  userId      String
+  routineId   String
+  date        DateTime @default(now())
+  completedEx String   // Guardará un array JSON de IDs de ejercicios completados: e.g. '["id1", "id2"]'
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
 }

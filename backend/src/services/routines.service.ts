@@ -21,22 +21,34 @@ export async function createRoutine(data: CreateRoutineInput) {
       name: data.name,
       description: data.description,
       userId: data.userId,
+      exercises: {
+        create: data.exercises || [],
+      },
     },
-    include: { user: { select: userSelect } },
+    include: {
+      user: { select: userSelect },
+      exercises: true,
+    },
   });
 }
 
 export async function listRoutines() {
   return prisma.routine.findMany({
     orderBy: { createdAt: "desc" },
-    include: { user: { select: userSelect } },
+    include: {
+      user: { select: userSelect },
+      exercises: true,
+    },
   });
 }
 
 export async function getRoutineById(id: string) {
   const routine = await prisma.routine.findUnique({
     where: { id },
-    include: { user: { select: userSelect } },
+    include: {
+      user: { select: userSelect },
+      exercises: true,
+    },
   });
 
   if (!routine) {
