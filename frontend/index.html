@@ -36,26 +36,6 @@
           <input type="password" id="login-password" required placeholder="••••••••">
         </div>
         <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
-        <p class="auth-switch">¿No tenés cuenta? <a href="#" onclick="toggleAuthForm('register')">Registrate aquí</a></p>
-      </form>
-
-      <!-- Formulario de Registro (Socio) -->
-      <form id="form-register" onsubmit="handleRegisterSubmit(event)" class="auth-form">
-        <h2 class="auth-title">CREAR CUENTA</h2>
-        <div class="form-group">
-          <label for="register-name">Nombre Completo</label>
-          <input type="text" id="register-name" required placeholder="Ej. Juan Pérez">
-        </div>
-        <div class="form-group">
-          <label for="register-email">Correo Electrónico</label>
-          <input type="email" id="register-email" required placeholder="juan@email.com">
-        </div>
-        <div class="form-group">
-          <label for="register-password">Contraseña</label>
-          <input type="password" id="register-password" required minlength="6" placeholder="Mínimo 6 caracteres">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
-        <p class="auth-switch">¿Ya tenés cuenta? <a href="#" onclick="toggleAuthForm('login')">Iniciá sesión</a></p>
       </form>
     </div>
   </div>
