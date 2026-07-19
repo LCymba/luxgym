@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -45,7 +46,7 @@ model WorkoutLog {
   userId      String
   routineId   String
   date        DateTime @default(now())
-  completedEx String   // Guardará un array JSON de IDs de ejercicios completados: e.g. '["id1", "id2"]'
+  completedEx String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
 }

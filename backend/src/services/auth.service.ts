@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt"; // Nota: backend usa 'bcryptjs' en package.json, vamos a importar de bcryptjs para evitar errores
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { prisma } from "../lib/prisma";
 import { AppError } from "../middleware/errorHandler";

@@ -9,8 +9,19 @@ import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",").map((origin) => origin.trim())
+  : ["http://localhost:5500", "http://127.0.0.1:5500"];
+
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? allowedOrigins
+        : true,
+  })
+);
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
@@ -21,7 +32,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/routines", routinesRoutes);
 app.use("/api/workout-logs", workoutLogsRoutes);
-app.use("/api/routines", routinesRoutes);
 
 app.use(errorHandler);
 
