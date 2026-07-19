@@ -1,6 +1,6 @@
 # LuxGym Backend
 
-API REST para gestión de gimnasio. Construida con **Express**, **TypeScript**, **Prisma** y **SQLite**.
+API REST para gestión de gimnasio. Construida con **Express**, **TypeScript**, **Prisma** y **PostgreSQL** (Supabase).
 
 Base URL local: **http://localhost:3000**
 
@@ -10,6 +10,7 @@ Base URL local: **http://localhost:3000**
 
 - Node.js 18+
 - npm o pnpm
+- Cuenta en [Supabase](https://supabase.com) (base de datos gratuita)
 
 ---
 
@@ -22,31 +23,47 @@ cd backend
 npm install
 ```
 
-Con pnpm:
-
-```bash
-cd backend
-pnpm install
-```
-
 ### 2. Configurar variables de entorno
 
-El archivo `.env` ya incluye la configuración por defecto:
+Copiá `.env.example` a `.env` y completá las URLs de Supabase:
+
+```bash
+copy .env.example .env
+```
 
 ```env
-DATABASE_URL="file:./dev.db"
+DATABASE_URL="postgresql://..."   # Pooler (puerto 6543)
+DIRECT_URL="postgresql://..."     # Directo (puerto 5432)
 PORT=3000
+JWT_SECRET="tu-secreto"
+FRONTEND_URL="http://localhost:5500,http://127.0.0.1:5500"
 ```
+
+Obtené las URLs en Supabase → **Project Settings → Database → Connection string**.
 
 ### 3. Ejecutar migraciones de base de datos
 
 Solo necesario la primera vez o cuando cambie el schema de Prisma:
 
 ```bash
+npm run db:migrate:deploy
+```
+
+Para desarrollo (crea nuevas migraciones al cambiar el schema):
+
+```bash
 npm run db:migrate
 ```
 
-### 4. Iniciar en modo desarrollo
+### 4. (Opcional) Cargar datos de prueba
+
+```bash
+npm run db:seed
+```
+
+Contraseña común de las cuentas de prueba: **`Test1234!`**
+
+### 5. Iniciar en modo desarrollo
 
 ```bash
 npm run dev
@@ -60,6 +77,8 @@ El servidor quedará disponible en **http://localhost:3000**.
 |---------|-------------|
 | `npm run build` | Compila TypeScript a `dist/` |
 | `npm run start` | Ejecuta la versión compilada (producción) |
+| `npm run db:migrate:deploy` | Aplica migraciones en producción |
+| `npm run db:seed` | Carga datos de prueba |
 | `npm run db:studio` | Abre Prisma Studio para ver/editar la base de datos |
 
 ---
